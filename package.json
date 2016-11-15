@@ -1,0 +1,32 @@
+{
+  "name": "static-site",
+  "version": "1.0.0",
+  "author": "Thorben Ziegler <contact@thorbenziegler.de>",
+  "description": "A framework for generating static sites.",
+  "scripts": {
+    "build": "gulp build",
+    "watch": "gulp watch"
+  },
+  "dependencies": {
+    "gulp-cli": "^1.2.2"
+  },
+  "devDependencies": {
+    "file-exists": "^2.0.0",
+    "fs": "0.0.1-security",
+    "gulp": "github:gulpjs/gulp#4.0",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulp-jspm": "^0.5.13",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^2.3.2",
+    "jspm": "^0.16.48",
+    "normalize.css": "^5.0.0"
+  },
+  "jspm": {
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
+}
