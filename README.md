@@ -1,7 +1,7 @@
-Static Site
-===========
+Static Website
+==============
 
-A generator for easily creating static sites. Handlebars is used as templating engine.
+A generator for easily creating static websites. Handlebars is used as templating engine.
 
 Installation
 ------------
