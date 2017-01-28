@@ -5,16 +5,18 @@ var gulp = require('gulp'),
     jspm = require('gulp-jspm'),
     rename = require('gulp-rename'),
     handlebars = require('gulp-compile-handlebars'),
-    fileExists = require('file-exists');
+    fileExists = require('file-exists'),
+    fs = require('fs'),
+    browserSync = require('browser-sync').create();
 
 /**
  * Build template files.
  */
 gulp.task('build:templates', function(done) {
-    var pages = require('./source/data/pages.json');
+    var pages = JSON.parse(fs.readFileSync('./source/data/pages.json', 'utf8'));
 
     var options = {
-        batch: ['./source/includes/'],
+        batch: ['./source/templates/includes/'],
         helpers: {
             times: function(n, block) {
                 var accum = '';
@@ -72,16 +74,17 @@ gulp.task('build:templates', function(done) {
         }
 
         if (page.url) {
-            if (!fileExists('./build/' + page.url + '.php')) {
+            if (!fileExists('./build/' + page.url + '.html')) {
                 fileName = page.url;
             }
         }
 
-        gulp.src('./source/' + template + '.hbs')
+        gulp.src('./source/templates/' + template + '.hbs')
             .pipe(handlebars(page, options))
-            .pipe(rename(fileName + '.php'))
+            .pipe(rename(fileName + '.html'))
             .pipe(gulp.dest('./build/'));
     }
+
     done();
 });
 
@@ -106,30 +109,61 @@ gulp.task('build:stylesheets', function() {
             {includePaths: ['./node_modules'], noCache: true}
         ))
         .pipe(autoprefixer())
-        .pipe(gulp.dest('./build/assets/css/'));
+        .pipe(gulp.dest('./build/assets/css/'))
+        .pipe(browserSync.stream());
 });
 
 /**
  * Copy the images.
  */
-gulp.task('build:images', function() {
+gulp.task('copy:images', function() {
     return gulp.src('./source/assets/img/**/*.*')
         .pipe(gulp.dest('./build/assets/img/'));
 });
 
+/**
+ * Copy root files.
+ */
+gulp.task('copy:root', function() {
+    return gulp.src('./source/*.*')
+        .pipe(gulp.dest('./build/'));
+});
+
+function reload(done) {
+    setTimeout(browserSync.reload, 200);
+    done();
+}
+
 function watch(done) {
-    gulp.watch('./source/**/*.hbs').on('change', gulp.series('build:templates'));
+    gulp.watch('./source/templates/**/*.hbs').on('change', gulp.series('build:templates'));
     gulp.watch('./source/data/pages.json').on('change', gulp.series('build:templates'));
     gulp.watch('./source/assets/sass/**/*.scss').on('change', gulp.series('build:stylesheets'));
     gulp.watch('./source/assets/js/**/*.js').on('change', gulp.series('build:scripts'));
-    gulp.watch('./source/assets/img/**/*.*').on('change', gulp.series('build:images'));
+    gulp.watch('./source/assets/img/**/*.*').on('change', gulp.series('copy:images'));
+    gulp.watch('./source/*.*').on('change', gulp.series('copy:root'));
+    done();
+}
+
+function serve(done) {
+    browserSync.init({
+        server: {
+            baseDir: './build/',
+        },
+    });
+
+    gulp.watch('./source/templates/**/*.hbs').on('change', gulp.series('build:templates', reload));
+    gulp.watch('./source/data/pages.json').on('change', gulp.series('build:templates', reload));
+    gulp.watch('./source/assets/sass/**/*.scss').on('change', gulp.series('build:stylesheets'));
+    gulp.watch('./source/assets/js/**/*.js').on('change', gulp.series('build:scripts', reload));
+    gulp.watch('./source/assets/img/**/*.*').on('change', gulp.series('copy:images', reload));
+    gulp.watch('./source/*.*').on('change', gulp.series('copy:root', reload));
     done();
 }
 
 /**
 * Build all.
 */
-gulp.task('build', gulp.series('build:templates', 'build:stylesheets', 'build:scripts', 'build:images', function(done) {
+gulp.task('build', gulp.series('build:templates', 'build:stylesheets', 'build:scripts', 'copy:images', 'copy:root', function(done) {
     done();
 }));
 
@@ -137,3 +171,5 @@ gulp.task('build', gulp.series('build:templates', 'build:stylesheets', 'build:sc
  * Build all and start watch task.
  */
 gulp.task('watch', gulp.series('build', watch));
+
+gulp.task('serve', gulp.series('watch', serve));

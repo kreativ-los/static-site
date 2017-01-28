@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "author": "Thorben Ziegler <contact@thorbenziegler.de>",
   "description": "A framework for generating static sites.",
+  "repository": "git@github.com:T-BriX/static-site.git",
   "scripts": {
     "build": "gulp build",
     "watch": "gulp watch"
@@ -11,6 +12,7 @@
     "gulp-cli": "^1.2.2"
   },
   "devDependencies": {
+    "browser-sync": "^2.18.6",
     "file-exists": "^2.0.0",
     "fs": "0.0.1-security",
     "gulp": "github:gulpjs/gulp#4.0",
