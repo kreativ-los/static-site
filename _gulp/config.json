@@ -1,0 +1,31 @@
+{
+  "source": "./source/",
+  "build": "./build/",
+  "data": {
+    "content": "./source/data/pages.json"
+  },
+  "templates": {
+    "includes": "./source/templates/includes/",
+    "source": "./source/templates/",
+    "dest": "./build/"
+  },
+  "scripts": {
+    "source": [
+      "./source/assets/js/**/*.js",
+      "!./source/assets/js/modules/**/*"
+    ],
+    "dest": "./build/assets/js/"
+  },
+  "styles": {
+    "source": "./source/assets/sass/**/*.scss",
+    "dest": "./build/assets/css/"
+  },
+  "images": {
+    "source": "./source/assets/img/**/*.*",
+    "dest": "./build/assets/img/"
+  },
+  "root": {
+    "source": "./source/*.*",
+    "dest": "./dest/"
+  }
+}
