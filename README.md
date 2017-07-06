@@ -6,7 +6,7 @@ A generator for easily creating static websites. Handlebars is used as templatin
 Installation
 ------------
 
-1. Update node. Used version v7.1.0.
+1. Update node. Used version v7.1.0. If you are using nvm, simply type `$ nvm install`
 2. Install gulp 4. `$ npm install -g gulp-cli`.
 3. `$ npm install`
 
@@ -15,6 +15,7 @@ Tasks
 
 1. `$ gulp build` Builds the project.
 2. `$ gulp watch` Builds the project and watches for changes.
+3. `$ gulp serve` Builds the project, watches for changes and starts browser sync server.
 
 Files
 -----
