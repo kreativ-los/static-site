@@ -7,7 +7,8 @@
     "start": "gulp serve",
     "build": "gulp build",
     "watch": "gulp watch",
-    "serve": "gulp serve"
+    "serve": "gulp serve",
+    "clean": "rm -rf node_modules/ jspm_packages/"
   },
   "dependencies": {
     "gulp-cli": "^1.2.2"
