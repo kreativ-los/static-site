@@ -67,7 +67,7 @@ gulp.task('build:templates', function(done) {
     page.index = i + 1;
     page.indexNext = i + 2;
     page.pageCount = pages.length;
-    page.menu = menu;
+    page.menu = JSON.parse(JSON.stringify(menu));
 
     if (argv.env === 'production') {
       page.production = true;
@@ -89,10 +89,10 @@ gulp.task('build:templates', function(done) {
       fileName = page.url;
     }
 
-    for (let a = 0; a < page.menu.items.length; a++) {
-      if (page.menu.items[a].url === fileName) {
-        page.menu.items[a].classes += ' active';
-      }
+
+    let mainMenu = page.menu.main;
+    for (let a = 0; a < mainMenu.items.length; a++) {
+      mainMenu.items[a].active = Boolean(mainMenu.items[a].url === fileName);
     }
 
     gulp.src(config.templates.source + template + '.hbs')
