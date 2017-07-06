@@ -14,14 +14,15 @@ let argv = yargs.argv;
 * Build template files.
 */
 gulp.task('build:templates', function(done) {
-  var pages = JSON.parse(fs.readFileSync(config.data.content, 'utf8'));
+  let pages = JSON.parse(fs.readFileSync(config.data.content, 'utf8'));
+  let menu = JSON.parse(fs.readFileSync(config.data.menu, 'utf8'));
 
-  var options = {
+  let options = {
     batch: [config.templates.includes],
     helpers: {
       times: function(n, block) {
-        var accum = '';
-        for (var a = 0; a < n; ++a) {
+        let accum = '';
+        for (let a = 0; a < n; ++a) {
           accum += block.fn({
             loopIndex: a + 1,
             parent: block.data.root,
@@ -61,11 +62,12 @@ gulp.task('build:templates', function(done) {
     },
   };
 
-  for (var i = 0; i < pages.length; i++) {
-    var page = pages[i];
+  for (let i = 0; i < pages.length; i++) {
+    let page = pages[i];
     page.index = i + 1;
     page.indexNext = i + 2;
     page.pageCount = pages.length;
+    page.menu = menu;
 
     if (argv.env === 'production') {
       page.production = true;
@@ -73,25 +75,29 @@ gulp.task('build:templates', function(done) {
       page.development = true;
     }
 
-    var template = 'default';
+    let template = 'default';
     if (page.template) {
       template = page.template;
     }
 
-    var fileName = 'page-' + i;
+    let fileName = 'page-' + i;
     if (i === 0) {
       fileName = 'index';
     }
 
     if (page.url) {
-      // if (!fileExists('./build/' + page.url + '.html')) {
       fileName = page.url;
-      // }
+    }
+
+    for (let a = 0; a < page.menu.items.length; a++) {
+      if (page.menu.items[a].url === fileName) {
+        page.menu.items[a].classes += ' active';
+      }
     }
 
     gulp.src(config.templates.source + template + '.hbs')
     .pipe(handlebars(page, options))
-    .pipe(rename(fileName + '.html'))
+    .pipe(rename(fileName + '.' + config.outputFileExtension))
     .pipe(gulp.dest(config.templates.dest));
   }
 

@@ -1,8 +1,10 @@
 {
+  "outputFileExtension": "html",
   "source": "./source/",
   "build": "./build/",
   "data": {
-    "content": "./source/data/pages.json"
+    "content": "./source/data/pages.json",
+    "menu": "./source/data/menu.json"
   },
   "templates": {
     "includes": "./source/templates/includes/",

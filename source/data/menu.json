@@ -1,0 +1,12 @@
+{
+  "main": {
+    "classes": "",
+    "items": [
+      {
+        "name": "Home",
+        "url": "home",
+        "classes": ""
+      }
+    ]
+  }
+}
