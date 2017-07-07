@@ -3,12 +3,15 @@
 import config from './config.json';
 
 import gulp from 'gulp';
-import yargs from 'yargs';
+import {argv} from 'yargs';
 import rename from 'gulp-rename';
 import handlebars from 'gulp-compile-handlebars';
 import fs from 'fs';
+import glob from 'glob';
 
-let argv = yargs.argv;
+function getFiles(path) {
+  return glob.sync(path);
+}
 
 /**
 * Build template files.
@@ -17,8 +20,10 @@ gulp.task('build:templates', function(done) {
   let pages = JSON.parse(fs.readFileSync(config.data.content, 'utf8'));
   let menu = JSON.parse(fs.readFileSync(config.data.menu, 'utf8'));
 
+  let partials = getFiles(config.templates.includes);
+
   let options = {
-    batch: [config.templates.includes],
+    batch: partials,
     helpers: {
       times: function(n, block) {
         let accum = '';

@@ -5,6 +5,13 @@ import config from './_gulp/config.json';
 import gulp from 'gulp';
 import browserSyncNode from 'browser-sync';
 import requireDir from 'require-dir';
+import {argv} from 'yargs';
+
+if (argv.env === 'production') {
+  console.log('Environment: production');
+} else {
+  console.log('Environment: development');
+}
 
 // require gulp tasks
 requireDir('_gulp');

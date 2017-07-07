@@ -7,7 +7,7 @@
     "menu": "./source/data/menu.json"
   },
   "templates": {
-    "includes": "./source/templates/includes/",
+    "includes": "./source/templates/includes/**/",
     "source": "./source/templates/",
     "dest": "./build/"
   },
